@@ -1,56 +1,100 @@
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class App {
-    public static void main(String[] args) throws Exception {
-        // Casey Hsu - 101376814
+public class App extends JFrame {
 
+    public App() {
+        initComponents();
+    }
+
+    private void initComponents() {
+        setTitle("Dictionary Application");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        Container contentPane = getContentPane();
+        contentPane.setLayout(new BorderLayout());
+
+        // Create and add components
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 1));
+        contentPane.add(panel, BorderLayout.CENTER);
+
+        JButton addWordButton = new JButton("1. Add New Word");
+        JButton deleteWordButton = new JButton("2. Delete Word");
+        JButton getMeaningButton = new JButton("3. Get Meaning");
+        JButton dictionaryListButton = new JButton("4. Dictionary List");
+        JButton spellCheckButton = new JButton("5. Spell Check Text File");
+        JButton exitProgramButton = new JButton("6. Exit Program");
+
+        panel.add(addWordButton);
+        panel.add(deleteWordButton);
+        panel.add(getMeaningButton);
+        panel.add(dictionaryListButton);
+        panel.add(spellCheckButton);
+        panel.add(exitProgramButton);
+
+        // Set up action listeners
         Coordinator coordinator = new Coordinator();
-        int choice = 0;
 
-        while (choice != 6){
-            Scanner scan = new Scanner(System.in);
-            System.out.println("\nPlease enter one of the following menu items.\n");
-            System.out.println("--------------1. Add New Word-----------------");
-            System.out.println("--------------2. Delete Word------------------");
-            System.out.println("--------------3. Get Meaning------------------");
-            System.out.println("--------------4. Dictionary List--------------");
-            System.out.println("--------------5. Spell Check Text File--------");
-            System.out.println("--------------6. Exit Program-----------------\n");
-            choice = Integer.parseInt(scan.nextLine());
-
-            switch (choice){
-                case 1:
-                    System.out.println("\nPlease enter the word you want submitted");
-                    String word = scan.nextLine();
-                    System.out.println("\nPlease enter the definition of the word.");
-                    String meaning = scan.nextLine();
-                    coordinator.addWord(word, meaning);
-                    break;
-                case 2:
-                    System.out.println("\nPlease enter the name of the word that you want deleted.\n");
-                    String deletedWord = scan.nextLine();
-                    coordinator.deleteWord(deletedWord);
-                    break;
-                case 3:
-                    System.out.println("\nPlease enter the word that you want defined.\n");
-                    String definedWord = scan.nextLine();
-                    coordinator.getMeaning(definedWord);
-                    break;
-                case 4:
-                    Thread.sleep(500);
-                    coordinator.printDictionary();
-                    break;
-                case 5:
-                    System.out.println("\nPlease enter the name of the text file that you want spell checked.");
-                    String fileName = scan.nextLine();  
-                    System.out.println("\nSpell checking file...\n");
-                    coordinator.spellCheck(fileName);
-                    break;
-                case 6:
-                    System.out.println("\nThank you for using the Dictionary application.\n");
-                    scan.close();
-                    break;
+        addWordButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Add new word
+                // Replace console input with JOptionPane dialogs
+                String word = JOptionPane.showInputDialog("Please enter the word you want submitted");
+                String meaning = JOptionPane.showInputDialog("Please enter the definition of the word.");
+                coordinator.addWord(word, meaning);
             }
-        }
+        });
+
+        deleteWordButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Delete word
+                String deletedWord = JOptionPane.showInputDialog("Please enter the name of the word that you want deleted.");
+                coordinator.deleteWord(deletedWord);
+            }
+        });
+
+        getMeaningButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Get meaning
+                String definedWord = JOptionPane.showInputDialog("Please enter the word that you want defined.");
+                coordinator.getMeaning(definedWord);
+            }
+        });
+
+        dictionaryListButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Print dictionary
+                coordinator.printDictionary();
+            }
+        });
+
+        spellCheckButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Spell check text file
+                String fileName = JOptionPane.showInputDialog("Please enter the name of the text file that you want spell checked.");
+                coordinator.spellCheck(fileName);
+            }
+        });
+
+        exitProgramButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Exit program
+                System.exit(0);
+            }
+        });
+
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                App app = new App();
+                app.setVisible(true);
+            }
+        });
     }
 }
